@@ -16,8 +16,7 @@ import numpy as np
 # -----------------------------------------------
 
 def compute_output_size_1d(input_array, kernel_array):
-    pass
-
+    return len(input_array) - len(kernel_array) + 1
 
 # -----------------------------------------------
 # Example:
@@ -37,7 +36,14 @@ print(compute_output_size_1d(input_array, kernel_array))
 def convolve_1d(input_array, kernel_array):
     # Tip: start by initializing an empty output array (you can use your function above to calculate the correct size).
     # Then fill the cells in the array with a loop.
-    pass
+    output_size = compute_output_size_1d(input_array, kernel_array)
+    output = np.zeros(output_size)
+
+    for i in range(output_size):
+        window = input_array[i : i + len(kernel_array)]
+        output[i] = np.sum(window * kernel_array)
+
+    return output
 
 # -----------------------------------------------
 # Another tip: write test cases like this, so you can easily test your function.
@@ -56,8 +62,15 @@ print(convolve_1d(input_array, kernel_array))
 # -----------------------------------------------
 
 def compute_output_size_2d(input_matrix, kernel_matrix):
-    pass
+    input_height = input_matrix.shape[0]
+    input_width = input_matrix.shape[1]
 
+    kernel_height = kernel_matrix.shape[0]
+    kernel_width = kernel_matrix.shape[1]
+
+    dim = (input_height - kernel_height + 1, input_width - kernel_width + 1)
+
+    return dim
 
 # -----------------------------------------------
 
@@ -72,7 +85,15 @@ def compute_output_size_2d(input_matrix, kernel_matrix):
 def convolute_2d(input_matrix, kernel_matrix):
     # Tip: same tips as above, but you might need a nested loop here in order to
     # define which parts of the input matrix need to be multiplied with the kernel matrix.
-    pass
+    output_dim = compute_output_size_2d(input_matrix, kernel_matrix)
+    output = np.zeros((output_dim))
+
+    for row in range(output.shape[0]):
+        for col in range(output.shape[1]):
+            batch = input_matrix[row : row + kernel_matrix.shape[0], col : col + kernel_matrix.shape[1]]
+            output[row, col] = np.sum(batch * kernel_matrix)
+
+    return output
 
 
 # -----------------------------------------------
